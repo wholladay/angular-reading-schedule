@@ -5,13 +5,15 @@ import {AlertModule} from 'ngx-bootstrap';
 import {AppComponent} from './app.component';
 import {NavComponent} from './nav/nav.component';
 import {FooterComponent} from './footer/footer.component';
+import {ScheduleFormComponent} from './schedule-form/schedule-form.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
-    FooterComponent
+    FooterComponent,
+    ScheduleFormComponent
   ],
   imports: [
     BrowserModule,

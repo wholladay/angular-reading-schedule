@@ -1,0 +1,25 @@
+<div class="container">
+  <h1>Options</h1>
+  <form>
+    <!--<div class="form-group">-->
+      <!--<label for="name">Name</label>-->
+      <!--<input type="text" class="form-control" id="name" required>-->
+    <!--</div>-->
+
+    <!--<div class="form-group">-->
+      <!--<label for="alterEgo">Alter Ego</label>-->
+      <!--<input type="text" class="form-control" id="alterEgo">-->
+    <!--</div>-->
+
+    <div class="form-group">
+      <label>Type of Schedule:
+        <select class="form-control" required>
+          <option *ngFor="let choice of scheduleChoices" [value]="choice.id">{{choice.label}}</option>
+        </select>
+      </label>
+    </div>
+
+    <button type="submit" class="btn btn-success">Generate</button>
+
+  </form>
+</div>
