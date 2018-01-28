@@ -1,25 +1,57 @@
 <div class="container">
   <h1>Options</h1>
+  <hr>
   <form>
-    <!--<div class="form-group">-->
-      <!--<label for="name">Name</label>-->
-      <!--<input type="text" class="form-control" id="name" required>-->
-    <!--</div>-->
-
-    <!--<div class="form-group">-->
-      <!--<label for="alterEgo">Alter Ego</label>-->
-      <!--<input type="text" class="form-control" id="alterEgo">-->
-    <!--</div>-->
-
     <div class="form-group">
       <label>Type of Schedule:
-        <select class="form-control" required>
-          <option *ngFor="let choice of scheduleChoices" [value]="choice.id">{{choice.label}}</option>
+        <select class="form-control" (change)="scheduleChoiceChanged($event.target.selectedIndex)" required>
+          <option *ngFor="let choice of scheduleChoices" [value]="choice">{{choice.label}}</option>
         </select>
       </label>
     </div>
 
-    <button type="submit" class="btn btn-success">Generate</button>
+    <div class="form-group">
+      <label>Scriptures:
+        <select class="form-control" required>
+          <option *ngFor="let scripture of scriptureChoices" [value]="scripture.id">{{scripture.label}}</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label for="startDate">Start Date:</label>
+      <div class="input-group">
+        <input id="startDate" type="text" class="form-control" bsDatepicker #dpStart="bsDatepicker"
+               [bsConfig]="{containerClass: 'theme-green'}" [disabled]="selectedSchedule === st.EndCount">
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-success" (click)="dpStart.show()" [disabled]="selectedSchedule === st.EndCount">
+            <i class="fa fa-calendar"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="endDate">End Date:</label>
+      <div class="input-group">
+        <input id="endDate" type="text" class="form-control" bsDatepicker #dpEnd="bsDatepicker"
+               [bsConfig]="{containerClass: 'theme-red'}" [disabled]="selectedSchedule === st.StartCount">
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-danger" (click)="dpEnd.show()" [disabled]="selectedSchedule === st.StartCount">
+            <i class="fa fa-calendar"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-group">
+        <label for="endDate">Chapters Per Day:
+          <input type="number" class="form-control" [disabled]="selectedSchedule === st.StartEnd">
+        </label>
+      </div>
+    </div>
+
+    <button type="button" (click)="calculate()" class="btn btn-primary">Generate</button>
+    <!--<button type="submit" class="btn btn-success">Generate</button>-->
 
   </form>
+  <h1>Results</h1>
+  <hr>
 </div>
