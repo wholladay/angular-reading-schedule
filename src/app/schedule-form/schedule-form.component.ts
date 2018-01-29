@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ScheduleOption} from '../schedule-option';
 import {ScheduleType} from '../schedule-type.enum';
+import {VolumeId} from '../volume-id.enum';
+import {CalendarService} from '../calendar.service';
 
 @Component({
   selector: 'app-schedule-form',
@@ -10,11 +12,17 @@ import {ScheduleType} from '../schedule-type.enum';
 export class ScheduleFormComponent implements OnInit {
   st = ScheduleType;
   selectedSchedule: ScheduleType;
+  selectedScripture: VolumeId;
   scheduleChoices: ScheduleOption[];
-  currentScheduleChoice: ScheduleOption;
   scriptureChoices: any[];
+  currentScripture: number;
+  startDate: Date;
+  endDate: Date;
+  dayCount: number;
+  chapterCount: number;
+  chaptersPerDay: number;
 
-  constructor() {
+  constructor(private calendarService: CalendarService) {
   }
 
   ngOnInit() {
@@ -24,33 +32,29 @@ export class ScheduleFormComponent implements OnInit {
       new ScheduleOption(ScheduleType.EndCount, 'Choose end date and chapters per day.')
     ];
     this.scriptureChoices = [
-      {id: 'OT', label: 'Old Testament'},
-      {id: 'NT', label: 'New Testament'},
-      {id: 'BM', label: 'Book of Mormon'},
-      {id: 'DC', label: 'Doctrine and Covenants'},
-      {id: 'PP', label: 'Pearl of Great Price'},
+      {id: VolumeId.OT, label: 'Old Testament'},
+      {id: VolumeId.NT, label: 'New Testament'},
+      {id: VolumeId.BOM, label: 'Book of Mormon'},
+      {id: VolumeId.DC, label: 'Doctrine and Covenants'},
+      {id: VolumeId.PGP, label: 'Pearl of Great Price'},
     ];
     this.selectedSchedule = ScheduleType.StartEnd;
+    this.currentScripture = 2;
+    this.selectedScripture = this.scriptureChoices[this.currentScripture].id;
   }
 
   calculate() {
-    console.log('calculate called');
+    this.chapterCount = this.calendarService.getChapterCount(this.selectedScripture);
+    this.dayCount = this.calendarService.getDays(this.startDate, this.endDate);
+    this.chaptersPerDay = this.calendarService.calculateChaptersPerDay(this.selectedScripture, this.startDate, this.endDate);
   }
 
   scheduleChoiceChanged(index: number) {
     this.selectedSchedule = this.scheduleChoices[index].id;
-    this.initInputs();
   }
 
-  private initInputs() {
-    switch (this.selectedSchedule) {
-      case ScheduleType.StartEnd:
-        break;
-      case ScheduleType.EndCount:
-        break;
-      case ScheduleType.StartCount:
-        break;
-    }
+  scriptureChoiceChanged(index: number) {
+    this.selectedScripture = this.scriptureChoices[index].id;
   }
 
 }

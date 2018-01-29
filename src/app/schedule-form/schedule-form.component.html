@@ -12,7 +12,7 @@
 
     <div class="form-group">
       <label>Scriptures:
-        <select class="form-control" required>
+        <select class="form-control" name="scripture" [(ngModel)]="currentScripture" (change)="scriptureChoiceChanged($event.target.selectedIndex)" required>
           <option *ngFor="let scripture of scriptureChoices" [value]="scripture.id">{{scripture.label}}</option>
         </select>
       </label>
@@ -21,7 +21,7 @@
     <div class="form-group">
       <label for="startDate">Start Date:</label>
       <div class="input-group">
-        <input id="startDate" type="text" class="form-control" bsDatepicker #dpStart="bsDatepicker"
+        <input id="startDate" type="text" name="startDate" class="form-control" bsDatepicker #dpStart="bsDatepicker" [(ngModel)]="startDate"
                [bsConfig]="{containerClass: 'theme-green'}" [disabled]="selectedSchedule === st.EndCount">
         <div class="input-group-btn">
           <button type="button" class="btn btn-success" (click)="dpStart.show()" [disabled]="selectedSchedule === st.EndCount">
@@ -32,7 +32,7 @@
     <div class="form-group">
       <label for="endDate">End Date:</label>
       <div class="input-group">
-        <input id="endDate" type="text" class="form-control" bsDatepicker #dpEnd="bsDatepicker"
+        <input id="endDate" type="text" name="endDate" class="form-control" bsDatepicker #dpEnd="bsDatepicker" [(ngModel)]="endDate"
                [bsConfig]="{containerClass: 'theme-red'}" [disabled]="selectedSchedule === st.StartCount">
         <div class="input-group-btn">
           <button type="button" class="btn btn-danger" (click)="dpEnd.show()" [disabled]="selectedSchedule === st.StartCount">
@@ -43,15 +43,15 @@
     <div class="form-group">
       <div class="input-group">
         <label for="endDate">Chapters Per Day:
-          <input type="number" class="form-control" [disabled]="selectedSchedule === st.StartEnd">
+          <input type="number" class="form-control" name="chaptersPerDay" [(ngModel)]="chaptersPerDay" [disabled]="selectedSchedule === st.StartEnd">
         </label>
       </div>
     </div>
 
     <button type="button" (click)="calculate()" class="btn btn-primary">Generate</button>
-    <!--<button type="submit" class="btn btn-success">Generate</button>-->
 
   </form>
+  <p>Chapters: {{chapterCount}}, Number of Days: {{dayCount}}, Chapters Per Day: {{chaptersPerDay}}</p>
   <h1>Results</h1>
   <hr>
 </div>
