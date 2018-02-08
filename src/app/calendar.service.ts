@@ -7,6 +7,7 @@ import moment = require('moment');
 @Injectable()
 export class CalendarService {
 
+  fileNames = {};
   oldTestament: Book[] = [
     new Book('Genesis', 50),
     new Book('Exodus', 40),
@@ -114,9 +115,15 @@ export class CalendarService {
     this.scriptures[VolumeId.BOM] = this.bookOfMormon;
     this.scriptures[VolumeId.DC] = this.doctrineAndCovenants;
     this.scriptures[VolumeId.PGP] = this.pearlOfGreatPrice;
+
+    this.fileNames[VolumeId.OT] = 'OldTestament.ics';
+    this.fileNames[VolumeId.NT] = 'NewTestament.ics';
+    this.fileNames[VolumeId.BOM] = 'BookOfMormon.ics';
+    this.fileNames[VolumeId.DC] = 'DoctrineAndCovenants.ics';
+    this.fileNames[VolumeId.PGP] = 'PearlOfGreatPrice.ics';
   }
 
-  generateSchedule(scriptureKey: string, dailyCount: number) {
+  generateSchedule(scriptureKey: VolumeId, dailyCount: number, startDate: Date) {
 
     let currentBook: string = null;
     let currentCount = 0;
@@ -140,6 +147,53 @@ export class CalendarService {
     if (dailyAssignment) {
       this.assignments.push(dailyAssignment);
     }
+
+    const beginDate = moment(startDate);
+    const endDate = moment(startDate).add(1, 'days');
+    let schedule = 'BEGIN:VCALENDAR\n';
+    this.assignments.forEach(assignment => {
+      schedule += `BEGIN:VEVENT
+DTSTART;VALUE=DATE:${beginDate.format('YYYYMMDD')}
+DTEND;VALUE=DATE:${endDate.format('YYYYMMDD')}
+STATUS:CONFIRMED
+SUMMARY:${assignment}
+TRANSP:TRANSPARENT
+END:VEVENT
+`;
+      beginDate.add(1, 'days');
+      endDate.add(1, 'days');
+    });
+
+    schedule += 'END:VCALENDAR\n';
+    this.saveTextAsFile(schedule, this.fileNames[scriptureKey]);
+  }
+
+  saveTextAsFile(data: string, filename: string) {
+
+    if (!data) {
+      console.error('Console.save: No data');
+      return;
+    }
+
+    if (!filename) {
+      filename = 'schedule.ics';
+    }
+
+    const blob = new Blob([data], {type: 'text/plain'});
+
+    // FOR IE:
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+    } else {
+      const e = document.createEvent('MouseEvents');
+      const a = document.createElement('a');
+
+      a.download = filename;
+      a.href = window.URL.createObjectURL(blob);
+      a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
+      e.initEvent('click', true, false);
+      a.dispatchEvent(e);
+    }
   }
 
   getDays(startDate: Date, endDate: Date): number {
@@ -148,7 +202,9 @@ export class CalendarService {
 
   getChapterCount(volumeId: VolumeId): number {
     let chapterCount = 0;
-    this.scriptures[volumeId].forEach(book => {chapterCount += book.chapters; });
+    this.scriptures[volumeId].forEach(book => {
+      chapterCount += book.chapters;
+    });
     return chapterCount;
   }
 

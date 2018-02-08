@@ -44,9 +44,18 @@ export class ScheduleFormComponent implements OnInit {
   }
 
   calculate() {
-    this.chapterCount = this.calendarService.getChapterCount(this.selectedScripture);
-    this.dayCount = this.calendarService.getDays(this.startDate, this.endDate);
-    this.chaptersPerDay = this.calendarService.calculateChaptersPerDay(this.selectedScripture, this.startDate, this.endDate);
+    switch (this.selectedSchedule) {
+      case ScheduleType.StartEnd:
+        this.chapterCount = this.calendarService.getChapterCount(this.selectedScripture);
+        this.dayCount = this.calendarService.getDays(this.startDate, this.endDate);
+        this.chaptersPerDay = this.calendarService.calculateChaptersPerDay(this.selectedScripture, this.startDate, this.endDate);
+        break;
+      case ScheduleType.EndCount:
+        break;
+      case ScheduleType.StartCount:
+        break;
+    }
+    this.calendarService.generateSchedule(this.selectedScripture, this.chaptersPerDay, this.startDate);
   }
 
   scheduleChoiceChanged(index: number) {
