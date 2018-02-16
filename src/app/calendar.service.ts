@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Book} from './book';
-import {ScheduleType} from './schedule-type.enum';
 import {VolumeId} from './volume-id.enum';
-import moment = require('moment');
+import * as moment from 'moment';
 
 @Injectable()
 export class CalendarService {
