@@ -18,7 +18,6 @@ export class ScheduleFormComponent implements OnInit {
   currentScripture: number;
   startDate: Date;
   endDate: Date;
-  dayCount: number;
   chapterCount: number;
   chaptersPerDay: number;
 
@@ -46,13 +45,24 @@ export class ScheduleFormComponent implements OnInit {
   calculate() {
     switch (this.selectedSchedule) {
       case ScheduleType.StartEnd:
-        this.chapterCount = this.calendarService.getChapterCount(this.selectedScripture);
-        this.dayCount = this.calendarService.getDays(this.startDate, this.endDate);
+        if (!this.startDate || !this.endDate) {
+          console.log('You have to specify a start and end date.');
+          return;
+        }
         this.chaptersPerDay = this.calendarService.calculateChaptersPerDay(this.selectedScripture, this.startDate, this.endDate);
         break;
       case ScheduleType.EndCount:
+        if (!this.endDate || !this.chaptersPerDay || this.chaptersPerDay < 1) {
+          console.log('You must specify an end date and number of chapters per day.');
+          return;
+        }
+        this.startDate = this.calendarService.calculateStartDate(this.selectedScripture, this.endDate, this.chaptersPerDay);
         break;
       case ScheduleType.StartCount:
+        if (!this.startDate || !this.chaptersPerDay || this.chaptersPerDay < 1) {
+          console.log('You must specify a start date and number of chapters per day.');
+          return;
+        }
         break;
     }
     this.calendarService.generateSchedule(this.selectedScripture, this.chaptersPerDay, this.startDate);
@@ -60,6 +70,17 @@ export class ScheduleFormComponent implements OnInit {
 
   scheduleChoiceChanged(index: number) {
     this.selectedSchedule = this.scheduleChoices[index].id;
+    switch (this.selectedSchedule) {
+      case ScheduleType.StartCount:
+        this.endDate = null;
+        break;
+      case ScheduleType.EndCount:
+        this.startDate = null;
+        break;
+      case ScheduleType.StartEnd:
+        this.chaptersPerDay = null;
+        break;
+    }
   }
 
   scriptureChoiceChanged(index: number) {

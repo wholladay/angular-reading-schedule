@@ -212,4 +212,10 @@ END:VEVENT
     const days = this.getDays(startDate, endDate);
     return Math.round(this.getChapterCount(volumeId) / days);
   }
+
+  calculateStartDate(volumeId: VolumeId, endDate: Date, chaptersPerDay: number): Date {
+    const chapterCount = this.getChapterCount(volumeId);
+    const days = Math.round(chapterCount / chaptersPerDay);
+    return moment(endDate).subtract(days, 'days').toDate();
+  }
 }
