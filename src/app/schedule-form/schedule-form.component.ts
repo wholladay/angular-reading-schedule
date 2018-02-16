@@ -18,8 +18,8 @@ export class ScheduleFormComponent implements OnInit {
   currentScripture: number;
   startDate: Date;
   endDate: Date;
-  chapterCount: number;
   chaptersPerDay: number;
+  error: string;
 
   constructor(private calendarService: CalendarService) {
   }
@@ -46,25 +46,26 @@ export class ScheduleFormComponent implements OnInit {
     switch (this.selectedSchedule) {
       case ScheduleType.StartEnd:
         if (!this.startDate || !this.endDate) {
-          console.log('You have to specify a start and end date.');
+          this.error = 'You have to specify a start and end date.';
           return;
         }
         this.chaptersPerDay = this.calendarService.calculateChaptersPerDay(this.selectedScripture, this.startDate, this.endDate);
         break;
       case ScheduleType.EndCount:
         if (!this.endDate || !this.chaptersPerDay || this.chaptersPerDay < 1) {
-          console.log('You must specify an end date and number of chapters per day.');
+          this.error = 'You must specify an end date and number of chapters per day.';
           return;
         }
         this.startDate = this.calendarService.calculateStartDate(this.selectedScripture, this.endDate, this.chaptersPerDay);
         break;
       case ScheduleType.StartCount:
         if (!this.startDate || !this.chaptersPerDay || this.chaptersPerDay < 1) {
-          console.log('You must specify a start date and number of chapters per day.');
+          this.error = 'You must specify a start date and number of chapters per day.';
           return;
         }
         break;
     }
+    this.error = null;
     this.calendarService.generateSchedule(this.selectedScripture, this.chaptersPerDay, this.startDate);
   }
 

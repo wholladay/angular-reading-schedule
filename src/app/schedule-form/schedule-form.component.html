@@ -1,6 +1,9 @@
 <div class="container">
   <h1>Options</h1>
   <hr>
+  <alert *ngIf="error" type="danger">
+    {{error}}
+  </alert>
   <form>
     <div class="form-group">
       <label>Type of Schedule:

@@ -129,6 +129,8 @@ export class CalendarService {
     let currentCount = 0;
     let dailyAssignment = '';
 
+    this.assignments = [];
+
     for (const book of this.scriptures[scriptureKey]) {
       for (let chapter = 1; chapter <= book.chapters; chapter++) {
         dailyAssignment += dailyAssignment ? ',' : '';
@@ -215,7 +217,7 @@ END:VEVENT
 
   calculateStartDate(volumeId: VolumeId, endDate: Date, chaptersPerDay: number): Date {
     const chapterCount = this.getChapterCount(volumeId);
-    const days = Math.round(chapterCount / chaptersPerDay);
+    const days = Math.round(chapterCount / chaptersPerDay) - 1;
     return moment(endDate).subtract(days, 'days').toDate();
   }
 }
