@@ -14,7 +14,7 @@ the ICS file.
 ## Import the calendar into Google Calendar
 
 1. Go to your calendar page on google https://calendar.google.com
-2. [whatever](images/Calendar1.png?raw=true "title")
+2. ![click on plus](images/Calendar1.png?raw=true "title")
 
 ## Build
 
