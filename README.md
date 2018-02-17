@@ -1,14 +1,20 @@
 # ReadingSchedule
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.2.
+Use this app to generate an ICS file that can be imported into Google Calendar,
+or any calendar app that accepts ICS files. Below are instructions on how to 
+import your reading schedule into Google Calendar.
 
-## Development server
+## Generate the schedule using the app
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+1. Go to [cal.lazyhsoftware.com](http://cal.lazyhsoftware.com)
+2. Select the volume of scripture you want to read
+3. Choose the parameters you want and click on the Generate button to download
+the ICS file.
 
-## Code scaffolding
+## Import the calendar into Google Calendar
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+1. Go to your calendar page on google https://calendar.google.com
+2. [whatever](images/Calendar1.png?raw=true "title")
 
 ## Build
 
