@@ -3,6 +3,7 @@ import {ScheduleOption} from '../schedule-option';
 import {ScheduleType} from '../schedule-type.enum';
 import {VolumeId} from '../volume-id.enum';
 import {CalendarService} from '../calendar.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-schedule-form',
@@ -20,6 +21,7 @@ export class ScheduleFormComponent implements OnInit {
   endDate: Date;
   chaptersPerDay: number;
   error: string;
+  earlyStartWarning = false;
 
   constructor(private calendarService: CalendarService) {
   }
@@ -57,6 +59,15 @@ export class ScheduleFormComponent implements OnInit {
           return;
         }
         this.startDate = this.calendarService.calculateStartDate(this.selectedScripture, this.endDate, this.chaptersPerDay);
+        if (!this.earlyStartWarning) {
+          if (moment(this.startDate).isBefore(moment(), 'day')) {
+            this.earlyStartWarning = true;
+            this.error = `Your start date is in the past. Are you sure this is what you want?
+            If you are sure, click the "Generate" button again.`;
+            return;
+          }
+        }
+        this.earlyStartWarning = false;
         break;
       case ScheduleType.StartCount:
         if (!this.startDate || !this.chaptersPerDay || this.chaptersPerDay < 1) {
