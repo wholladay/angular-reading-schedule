@@ -1,5 +1,18 @@
 <div class="container">
-  <h3>Options</h3>
+  <h3>Options <i class="fa fa-question-circle help" (click)="openModal(template)"></i></h3>
+
+  <ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Modal</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div Markdown path="./README.md"></div>
+    </div>
+  </ng-template>
+
   <hr>
   <alert *ngIf="error" type="danger">
     {{error}}

@@ -9,6 +9,8 @@
       "outDir": "dist",
       "assets": [
         "assets",
+        { "glob": "README.md", "input": "../", "output": "./" },
+        { "glob": "**/*", "input": "../images/", "output": "./images/" },
         "favicon.ico"
       ],
       "index": "index.html",

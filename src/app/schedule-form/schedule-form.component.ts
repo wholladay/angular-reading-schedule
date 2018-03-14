@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {ScheduleOption} from '../schedule-option';
 import {ScheduleType} from '../schedule-type.enum';
 import {VolumeId} from '../volume-id.enum';
 import {CalendarService} from '../calendar.service';
 import * as moment from 'moment';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-schedule-form',
@@ -11,6 +12,7 @@ import * as moment from 'moment';
   styleUrls: ['./schedule-form.component.css']
 })
 export class ScheduleFormComponent implements OnInit {
+  modalRef: BsModalRef;
   st = ScheduleType;
   selectedSchedule: ScheduleType;
   selectedScripture: VolumeId;
@@ -23,7 +25,7 @@ export class ScheduleFormComponent implements OnInit {
   error: string;
   earlyStartWarning = false;
 
-  constructor(private calendarService: CalendarService) {
+  constructor(private calendarService: CalendarService, private modalService: BsModalService) {
   }
 
   ngOnInit() {
@@ -97,6 +99,10 @@ export class ScheduleFormComponent implements OnInit {
 
   scriptureChoiceChanged(index: number) {
     this.selectedScripture = this.scriptureChoices[index].id;
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
   }
 
 }
